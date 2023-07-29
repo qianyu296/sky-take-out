@@ -12,6 +12,7 @@ public interface EmployeeService {
      * @return
      */
     Employee login(EmployeeLoginDTO employeeLoginDTO);
-    Integer addEmployee(EmployeeDTO employeeDTO);
+    void addEmployee(EmployeeDTO employeeDTO);
+
 
 }

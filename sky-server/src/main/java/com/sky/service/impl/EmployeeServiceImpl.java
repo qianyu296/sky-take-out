@@ -1,7 +1,10 @@
 package com.sky.service.impl;
 
+import com.fasterxml.jackson.databind.util.BeanUtil;
 import com.sky.constant.MessageConstant;
+import com.sky.constant.PasswordConstant;
 import com.sky.constant.StatusConstant;
+import com.sky.context.BaseContext;
 import com.sky.dto.EmployeeDTO;
 import com.sky.dto.EmployeeLoginDTO;
 import com.sky.entity.Employee;
@@ -11,9 +14,12 @@ import com.sky.exception.PasswordErrorException;
 import com.sky.mapper.EmployeeMapper;
 import com.sky.service.EmployeeService;
 import org.apache.commons.codec.cli.Digest;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
+
+import java.time.LocalDateTime;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -64,7 +70,21 @@ public class EmployeeServiceImpl implements EmployeeService {
      * @return
      * */
 
-    public Integer addEmployee(EmployeeDTO employeeDTO){
-        return employeeMapper.addEmployee(employeeDTO);
+    public void addEmployee(EmployeeDTO employeeDTO){
+        Employee employee = new Employee();
+        // 将前端传递的数组复制到原数组当中
+        BeanUtils.copyProperties(employeeDTO,employee);
+        // 将密码加密
+        String md5Password = DigestUtils.md5DigestAsHex(PasswordConstant.DEFAULT_PASSWORD.getBytes());
+        employee.setPassword(md5Password);
+        // 1为启用,0为禁用
+        employee.setStatus(StatusConstant.ENABLE);
+        employee.setCreateTime(LocalDateTime.now());
+        employee.setUpdateTime(LocalDateTime.now());
+        // ThreadLocal 并不是要给Thread,而是Thread的局部变量
+        // ThreadLocal为每个线程提供单独一份存储空间,具有线程隔离的效果,只有在线程内才能获取到对应的值,线程外侧不能访问。
+        employee.setCreateUser(BaseContext.getCurrentId());
+        employee.setUpdateUser(BaseContext.getCurrentId());
+        employeeMapper.addEmployee(employee);
     }
 }
