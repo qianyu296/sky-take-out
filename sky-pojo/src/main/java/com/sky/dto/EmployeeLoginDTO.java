@@ -7,6 +7,7 @@ import lombok.Data;
 import java.io.Serializable;
 
 @Data
+// 描述当前类的作用: ApiModel
 @ApiModel(description = "员工登录时传递的数据模型")
 public class EmployeeLoginDTO implements Serializable {
 

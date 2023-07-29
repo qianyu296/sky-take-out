@@ -15,7 +15,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @ApiModel(description = "员工登录返回的数据格式")
 public class EmployeeLoginVO implements Serializable {
-
+    // 描述模型中的属性: ApiModelProperty
     @ApiModelProperty("主键值")
     private Long id;
 
