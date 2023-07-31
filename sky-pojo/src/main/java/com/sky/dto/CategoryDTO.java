@@ -1,10 +1,12 @@
 package com.sky.dto;
 
+import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
 import java.io.Serializable;
 
 @Data
+@ApiModel(value = "菜品分类")
 public class CategoryDTO implements Serializable {
 
     //主键
