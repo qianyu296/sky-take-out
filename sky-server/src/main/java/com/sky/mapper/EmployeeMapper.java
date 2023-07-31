@@ -1,10 +1,13 @@
 package com.sky.mapper;
 
+import com.github.pagehelper.Page;
 import com.sky.dto.EmployeeDTO;
+import com.sky.dto.EmployeePageQueryDTO;
 import com.sky.entity.Employee;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 @Mapper
 public interface EmployeeMapper {
@@ -20,4 +23,13 @@ public interface EmployeeMapper {
             "values" +
             "(#{name},#{username},#{password},#{phone},#{sex},#{idNumber},#{status},#{createTime},#{updateTime},#{createUser},#{updateUser})")
     void addEmployee(Employee employee);
+    Page<Employee> pageQuery(EmployeePageQueryDTO employeePageQueryDTO);
+    @Update("update employee set status = #{status} where id = #{id}")
+    void startOrStop(Integer status,Long id);
+    @Select("select * from employee where id = #{id}")
+    Employee getEmployeeById(Long id);
+    @Update("update employee " +
+            "set name = #{name},username = #{username},phone = #{phone},sex = #{sex}," +
+            "id_number = #{idNumber},update_time = #{updateTime},update_user = #{updateUser} where id = #{id}")
+    void updateEmployee(Employee employee);
 }
