@@ -1,5 +1,6 @@
 package com.sky.controller.admin;
 
+import com.sky.constant.MessageConstant;
 import com.sky.result.Result;
 import com.sky.utils.AliOssUtil;
 import io.swagger.annotations.Api;
@@ -46,10 +47,10 @@ public class CommonController {
         try {
             // 文件上传
             fileUrl = aliOssUtil.upload(file.getBytes(), filename);
-
+            return Result.success(fileUrl);
         } catch (IOException e) {
-            e.printStackTrace();
+            log.info("文件上传失败:{}",e.getMessage());
         }
-        return Result.success(fileUrl);
+        return Result.error(MessageConstant.UPLOAD_FAILED);
     }
 }
