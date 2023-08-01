@@ -4,18 +4,23 @@
 <mapper namespace="com.sky.mapper.DishMapper">
 
     <select id="pageQuery" resultType="com.sky.entity.Dish">
-        select * from dish
+        select d.id, d.name, d.category_id, d.price, d.image, d.description, d.status, d.create_time, d.update_time, d.create_user, d.update_user,
+        c.name AS category_name
+        from dish AS d
+        join category AS c on d.category_id = c.id
         <where>
             <if test="name != null and name != ''">
-                and name like concat('%',#{name},'%')
+                and d.name like concat('%', #{name}, '%')
             </if>
             <if test="categoryId != null and categoryId != ''">
-                and category_id = #{categoryId}
+                and d.category_id = #{categoryId}
             </if>
             <if test="status != null">
-                and status = #{status}
+                and d.status = #{status}
             </if>
         </where>
         order by create_time desc
     </select>
+
 </mapper>
+

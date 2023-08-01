@@ -2,6 +2,7 @@ package com.sky.controller.admin;
 
 import com.sky.dto.CategoryDTO;
 import com.sky.dto.CategoryPageQueryDTO;
+import com.sky.entity.Category;
 import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.service.CategoryService;
@@ -10,6 +11,8 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/admin/category")
@@ -55,7 +58,8 @@ public class CategoryController {
 
     /**
      * 修改分类
-     *
+     * @param categoryDTO
+     * @return
      * */
     @ApiOperation(value = "修改分类")
     @PutMapping
@@ -63,10 +67,25 @@ public class CategoryController {
         categoryService.update(categoryDTO);
         return Result.success("修改成功");
     }
+    /**
+     * 新增分类
+     * @param categoryDTO
+     * @return
+     * */
     @ApiOperation("新增分类")
     @PostMapping
     public Result<String> add(@RequestBody CategoryDTO categoryDTO){
         categoryService.add(categoryDTO);
         return Result.success("新增成功");
+    }
+    /**
+     * 根据类型查询套餐
+     * @param type
+     * @return
+     * */
+    @GetMapping("/list")
+    public Result<List<Category>> getList(Integer type){
+        List<Category> list = categoryService.getList(type);
+        return Result.success(list);
     }
 }
